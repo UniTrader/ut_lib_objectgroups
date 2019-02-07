@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mdscript name="UT_Lib_Object_Groups" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://utnas/~unitrader/XRebirthxsds/md.xsd">
+  <cues>
+    <cue name="Init" version="1">
+      <actions>
+        <raise_lua_event name="'RegisterAddon'" param="'extensions.ut_advanced_renaming.utrenaming'"/>
+      </actions>
+    </cue>
+  </cues>
+</mdscript>
