@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mdscript xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="UT_Lib_Objectgroups" xsi:noNamespaceSchemaLocation="http://utnas/~unitrader/XRebirthxsds/md.xsd">
+  <cues>
+    <cue name="Init_create_vars" version="1">
+      <actions>
+        <create_group groupname="global.$Clusters_all"/>
+        <create_group groupname="global.$Sectors_all"/>
+        <create_group groupname="global.$Zones_all_static"/>
+        <create_group groupname="global.$Zones_all"/>
+        <create_group groupname="global.$Stations_all"/>
+        <create_group groupname="global.$Stations_shipyards"/>
+        <create_group groupname="global.$Stations_wharfs"/>
+        <create_group groupname="global.$Stations_equipmentdocks"/>
+        <create_group groupname="global.$Stations_headquarters"/>
+        <create_group groupname="global.$Stations_trading"/>
+        <create_group groupname="global.$Stations_pirate"/>
+        <create_group groupname="global.$Stations_defence"/>
+        <create_group groupname="global.$Ships_all"/>
+        <create_group groupname="global.$Ships_construction"/>
+        <create_group groupname="global.$Ships_xl"/>
+        <create_group groupname="global.$Ships_l"/>
+        <create_group groupname="global.$Ships_m"/>
+        <create_group groupname="global.$Ships_s"/>
+        <create_group groupname="global.$Wrecks"/>
+        <!-- Ships out of ammo?? -->
+        <create_group groupname="global.$Modules_shipyards"/>
+        <create_group groupname="global.$Modules_wharfs"/>
+        <create_group groupname="global.$Modules_production"/>
+        <create_group groupname="global.$Modules_build"/>
+      </actions>
+      <cues>
+        <cue name="Populate_Spaces" comment="reset this cue when adding a Map Mod or DLC">
+          <actions>
+            <find_cluster groupname="global.$Clusters_all" multiple="true" normalcluster="true"/>
+            <find_sector groupname="global.$Sectors_all" multiple="true" space="player.galaxy"/>
+            <find_zone groupname="global.$Zones_all_static" multiple="true" normalzone="true" space="player.galaxy"/>
+          </actions>
+        </cue>
+        <cue name="Populate_Stations" comment="reset when Stations are missed (should not happen)">
+          <actions>
+            <find_station groupname="global.$Stations_all" multiple="true" space="player.galaxy"/>
+          </actions>
+          <cues>
+            <cue name="Filter_Stations">
+              <actions>
+                <clear_group group="global.$Stations_shipyards"/>
+                <clear_group group="global.$Stations_wharfs"/>
+                <clear_group group="global.$Stations_equipmentdocks"/>
+                <clear_group group="global.$Stations_headquarters"/>
+                <clear_group group="global.$Stations_trading"/>
+                <clear_group group="global.$Stations_pirate"/>
+                <clear_group group="global.$Stations_defence"/>
+                <do_all exact="global.$Stations_all.count" counter="$i">
+                  <do_if value="global.$Stations_all.{i}.isshipyard">
+                    <add_to_group groupname="global.$Stations_shipyards" object="global.$Stations_all.{i}"/>
+                  </do_if>
+                  <do_if value="global.$Stations_all.{i}.iswharf">
+                    <add_to_group groupname="global.$Stations_wharfs" object="global.$Stations_all.{i}"/>
+                  </do_if>
+                  <do_if value="global.$Stations_all.{i}.isequipmentdock">
+                    <add_to_group groupname="global.$Stations_equipmentdocks" object="global.$Stations_all.{i}"/>
+                  </do_if>
+                  <do_if value="global.$Stations_all.{i}.isheadquarters or global.$Stations_all.{i}.isfactionheadquarters">
+                    <add_to_group groupname="global.$Stations_headquarters" object="global.$Stations_all.{i}"/>
+                  </do_if>
+                  <do_if value="global.$Stations_all.{i}.istradestation">
+                    <add_to_group groupname="global.$Stations_trading" object="global.$Stations_all.{i}"/>
+                  </do_if>
+                  <do_if value="global.$Stations_all.{i}.ispiratebase">
+                    <add_to_group groupname="global.$Stations_pirate" object="global.$Stations_all.{i}"/>
+                  </do_if>
+                  <do_if value="global.$Stations_all.{i}.isdefencestation">
+                    <add_to_group groupname="global.$Stations_defence" object="global.$Stations_all.{i}"/>
+                  </do_if>
+                </do_all>
+              </actions>
+            </cue>
+          </cues>
+        </cue>
+        <cue name="Populate_Ships" comment="reset when Ships are missed (should not happen)">
+          <actions>
+            <find_ship groupname="global.$Ships_all" multiple="true" space="player.galaxy"/>
+          </actions>
+          <cues>
+            <cue name="Filter_Ships">
+              <actions>
+                <clear_group group="global.$Ships_construction"/>
+                <clear_group group="global.$Ships_xl"/>
+                <clear_group group="global.$Ships_l"/>
+                <clear_group group="global.$Ships_m"/>
+                <clear_group group="global.$Ships_s"/>
+                <do_all exact="global.$Ships_all.count" counter="$i">
+                  <do_if value="global.$Ships_all.{$i}.buildmodule.exists">
+                    <add_to_group groupname="global.$Ships_construction" object="global.$Ships_all.{$i}"/>
+                  </do_if>
+                  <do_if value="global.$Ships_all.{$i}.isclass.ship_xl">
+                    <add_to_group groupname="global.$Ships_xl" object="global.$Ships_all.{$i}"/>
+                  </do_if>
+                  <do_elseif value="global.$Ships_all.{$i}.isclass.ship_l">
+                    <add_to_group groupname="global.$Ships_l" object="global.$Ships_all.{$i}"/>
+                  </do_elseif>
+                  <do_elseif value="global.$Ships_all.{$i}.isclass.ship_m">
+                    <add_to_group groupname="global.$Ships_m" object="global.$Ships_all.{$i}"/>
+                  </do_elseif>
+                  <do_elseif value="global.$Ships_all.{$i}.isclass.ship_s">
+                    <add_to_group groupname="global.$Ships_s" object="global.$Ships_all.{$i}"/>
+                  </do_elseif>
+                </do_all>
+              </actions>
+            </cue>
+          </cues>
+        </cue>
+        <cue name="Update_Stations_New" instantiate="true">
+          <conditions>
+            <event_god_created_factory/>
+          </conditions>
+          <actions>
+            <add_to_group groupname="global.$Stations_all" object="event.param"/>
+            <do_if value="event.param.isshipyard">
+              <add_to_group groupname="global.$Stations_shipyards" object="event.param"/>
+            </do_if>
+            <do_if value="event.param.iswharf">
+              <add_to_group groupname="global.$Stations_wharfs" object="event.param"/>
+            </do_if>
+            <do_if value="event.param.isequipmentdock">
+              <add_to_group groupname="global.$Stations_equipmentdocks" object="event.param"/>
+            </do_if>
+            <do_if value="event.param.isheadquarters or event.param.isfactionheadquarters">
+              <add_to_group groupname="global.$Stations_headquarters" object="event.param"/>
+            </do_if>
+            <do_if value="event.param.istradestation">
+              <add_to_group groupname="global.$Stations_trading" object="event.param"/>
+            </do_if>
+            <do_if value="event.param.ispiratebase">
+              <add_to_group groupname="global.$Stations_pirate" object="event.param"/>
+            </do_if>
+            <do_if value="event.param.isdefencestation">
+              <add_to_group groupname="global.$Stations_defence" object="event.param"/>
+            </do_if>
+          </actions>
+        </cue>
+        <cue name="Update_Stations_Extend" instantiate="true">
+          <conditions>
+            <event_build_finished/>
+          </conditions>
+          <actions>
+            <set_value name="$ext_station" exact="event.param3.base"/>
+            <do_if value="event.param3.base.isshipyard">
+              <add_to_group groupname="global.$Stations_shipyards" object="event.param3.base"/>
+              <find_object_component groupname="global.$Modules_shipyards" object="event.param3.base" class="class.buildmodule" multiple="true">
+                <match_any>
+                  <match canbuildclass="class.ship_xl"/>
+                  <match canbuildclass="class.ship_l"/>
+                </match_any>
+              </find_object_component>
+            </do_if>
+            <do_if value="event.param3.base.iswharf">
+              <add_to_group groupname="global.$Stations_wharfs" object="event.param3.base"/>
+              <find_object_component groupname="global.$Modules_wharfs" object="event.param3.base" class="class.buildmodule" multiple="true">
+                <match_any>
+                  <match canbuildclass="class.ship_m"/>
+                  <match canbuildclass="class.ship_s"/>
+                </match_any>
+              </find_object_component>
+            </do_if>
+            <do_if value="event.param3.base.isequipmentdock">
+              <add_to_group groupname="global.$Stations_equipmentdocks" object="event.param3.base"/>
+            </do_if>
+            <do_if value="event.param3.base.isheadquarters or event.param3.base.isfactionheadquarters">
+              <add_to_group groupname="global.$Stations_headquarters" object="event.param3.base"/>
+            </do_if>
+            <do_if value="event.param3.base.istradestation">
+              <add_to_group groupname="global.$Stations_trading" object="event.param3.base"/>
+            </do_if>
+            <do_if value="event.param3.base.ispiratebase">
+              <add_to_group groupname="global.$Stations_pirate" object="event.param3.base"/>
+            </do_if>
+            <do_if value="event.param3.base.isdefencestation">
+              <add_to_group groupname="global.$Stations_defence" object="event.param3.base"/>
+            </do_if>
+          </actions>
+        </cue>
+        <cue name="Update_Ships" instantiate="true">
+          <conditions>
+            <event_job_ship_activated/>
+          </conditions>
+          <actions>
+            <do_if value="event.param.buildmodule.exists">
+              <add_to_group groupname="global.$Ships_construction" object="event.param"/>
+            </do_if>
+            <do_if value="event.param.isclass.ship_xl">
+              <add_to_group groupname="global.$Ships_xl" object="event.param"/>
+            </do_if>
+            <do_elseif value="event.param.isclass.ship_l">
+              <add_to_group groupname="global.$Ships_l" object="event.param"/>
+            </do_elseif>
+            <do_elseif value="event.param.isclass.ship_m">
+              <add_to_group groupname="global.$Ships_m" object="event.param"/>
+            </do_elseif>
+            <do_elseif value="event.param.isclass.ship_s">
+              <add_to_group groupname="global.$Ships_s" object="event.param"/>
+            </do_elseif>
+          </actions>
+        </cue>
+        <cue name="Update_Wrecks" instantiate="true">
+          <conditions>
+            <event_object_destroyed group="global.$Ships_all"/>
+          </conditions>
+          <actions>
+            <add_to_group groupname="global.$Wrecks" object="event.object"/>
+          </actions>
+        </cue>
+      </cues>
+    </cue>
+  </cues>
+</mdscript>

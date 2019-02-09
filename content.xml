@@ -1,4 +1,4 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <?xml-stylesheet type="text/xsl" href="../../content.xsl"?>
-<content id="ut_lib_object_groups" name="Lib: Object Groups" description="provides Object Groups for Stuff which usually is difficult/performance intensive to get" author="UniTrader" date="2019-02-07" version="001" save="false" uninstaller="false" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://utnas/~unitrader/XRebirthxsds/content.xsd">
+<content id="ut_lib_objectgroups" name="Lib: Object Groups" description="provides Object Groups for Stuff which usually is difficult/performance intensive to get" author="UniTrader" date="2019-02-07" version="001" save="false" uninstaller="false" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://utnas/~unitrader/XRebirthxsds/content.xsd">
 </content>
